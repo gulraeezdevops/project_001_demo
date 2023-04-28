@@ -1,0 +1,34 @@
+name: Project CICD Pipeline
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  testing:
+    runs-on: ubuntu-latest
+    steps:
+        #Copy Code from GitHub Repo to Ubuntu VM Machine
+      - name: Step1-Checkout Repository to Ubutu Runner
+        uses: actions/checkout@v3
+    
+      - name: Step2-Install/Setup Node
+        uses: actions/setup-node@v3
+        with:
+          node-version: 16
+
+      - name: Step3-Installing Depencencies
+        #run: npm i
+        run: npm ci
+
+      - name: Step4-Run Prettier
+        run: npx prettier --check "**/*.{html,css,js}"
+
+      - name: Step5-Run HTMLHint
+        run: npx htmlhint "**/*.html"
+
+
